@@ -1,4 +1,4 @@
-import { Grid, Pagination, Typography } from '@mui/material';
+import { Grid, Pagination } from '@mui/material';
 import { FC, useState } from 'react';
 import styled from 'styled-components';
 import { CharactersList } from '../components/CharactersList';
