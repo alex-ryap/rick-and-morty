@@ -14,15 +14,12 @@ export const AppRouter: FC = () => {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path="characters" element={<Characters />}>
-          <Route path=":characterId" element={<Character />} />
-        </Route>
-        <Route path="locations" element={<Locations />}>
-          <Route path=":locationId" element={<Location />} />
-        </Route>
-        <Route path="episodes" element={<Episodes />}>
-          <Route path=":episodeId" element={<Episode />} />
-        </Route>
+        <Route path="characters" element={<Characters />} />
+        <Route path="characters/:characterId" element={<Character />} />
+        <Route path="locations" element={<Locations />} />
+        <Route path="locations/:locationId" element={<Location />} />
+        <Route path="episodes" element={<Episodes />} />
+        <Route path="episodes/:episodeId" element={<Episode />} />
       </Route>
     </Routes>
   );

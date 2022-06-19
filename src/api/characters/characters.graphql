@@ -9,9 +9,8 @@ query allCharacters($page: Int) {
       name
       image
       gender
-      location {
-        name
-      }
+      status
+      species
     }
   }
 }

@@ -207,7 +207,7 @@ export type CharacterQueryVariables = Exact<{
 }>;
 
 
-export type CharacterQuery = { __typename?: 'Query', character?: { __typename?: 'Character', id?: string | null, name?: string | null, image?: string | null, gender?: string | null, location?: { __typename?: 'Location', name?: string | null } | null } | null };
+export type CharacterQuery = { __typename?: 'Query', character?: { __typename?: 'Character', id?: string | null, name?: string | null, image?: string | null, status?: string | null, species?: string | null, gender?: string | null, origin?: { __typename?: 'Location', name?: string | null, type?: string | null } | null, location?: { __typename?: 'Location', name?: string | null, type?: string | null } | null, episode: Array<{ __typename?: 'Episode', name?: string | null, air_date?: string | null, episode?: string | null } | null> } | null };
 
 export type CharactersByIdsQueryVariables = Exact<{
   ids: Array<Scalars['ID']> | Scalars['ID'];
@@ -221,7 +221,7 @@ export type AllCharactersQueryVariables = Exact<{
 }>;
 
 
-export type AllCharactersQuery = { __typename?: 'Query', characters?: { __typename?: 'Characters', info?: { __typename?: 'Info', count?: number | null, pages?: number | null } | null, results?: Array<{ __typename?: 'Character', id?: string | null, name?: string | null, image?: string | null, gender?: string | null, location?: { __typename?: 'Location', name?: string | null } | null } | null> | null } | null };
+export type AllCharactersQuery = { __typename?: 'Query', characters?: { __typename?: 'Characters', info?: { __typename?: 'Info', count?: number | null, pages?: number | null } | null, results?: Array<{ __typename?: 'Character', id?: string | null, name?: string | null, image?: string | null, gender?: string | null, status?: string | null, species?: string | null } | null> | null } | null };
 
 export type LocationQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -251,9 +251,21 @@ export const CharacterDocument = gql`
     id
     name
     image
+    status
+    species
     gender
+    origin {
+      name
+      type
+    }
     location {
       name
+      type
+    }
+    episode {
+      name
+      air_date
+      episode
     }
   }
 }
@@ -339,9 +351,8 @@ export const AllCharactersDocument = gql`
       name
       image
       gender
-      location {
-        name
-      }
+      status
+      species
     }
   }
 }

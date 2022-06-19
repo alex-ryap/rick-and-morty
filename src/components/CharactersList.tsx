@@ -6,14 +6,14 @@ import { CharacterCard } from './CharacterCard';
 const GridContainer = styled.div`
   display: grid;
   justify-content: center;
-  grid-template-columns: repeat(3, 350px);
+  grid-template-columns: repeat(3, 400px);
   gap: 20px;
 
-  @media (max-width: 1140px) {
-    grid-template-columns: repeat(2, 350px);
+  @media (max-width: 1288px) {
+    grid-template-columns: repeat(2, 400px);
   }
-  @media (max-width: 788px) {
-    grid-template-columns: minmax(350px, 1fr);
+  @media (max-width: 888px) {
+    grid-template-columns: minmax(400px, 1fr);
   }
 `;
 
