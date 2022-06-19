@@ -1,6 +1,5 @@
 import { Card, CardContent, Typography } from '@mui/material';
 import { FC } from 'react';
-import styled from 'styled-components';
 import { Location } from '../graphql/graphql';
 
 interface ILocationCardProps {
