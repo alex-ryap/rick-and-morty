@@ -1,12 +1,19 @@
-import './App.css';
 import { BrowserRouter } from 'react-router-dom';
 import { AppRouter } from './components/AppRouter';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+
+const client = new ApolloClient({
+  uri: 'https://rickandmortyapi.com/graphql',
+  cache: new InMemoryCache(),
+});
 
 function App() {
   return (
-    <BrowserRouter>
-      <AppRouter />
-    </BrowserRouter>
+    <ApolloProvider client={client}>
+      <BrowserRouter>
+        <AppRouter />
+      </BrowserRouter>
+    </ApolloProvider>
   );
 }
 
