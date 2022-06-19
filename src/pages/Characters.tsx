@@ -36,7 +36,9 @@ export const Characters: FC = () => {
   ) : (
     <Grid container direction="column" rowSpacing={2} alignItems="center">
       <Grid item>
-        <Title variant="h3">Characters</Title>
+        <Title variant="h3" sx={{ mb: 2 }}>
+          Characters
+        </Title>
       </Grid>
       <Grid item>
         <CharactersList characters={characters} />

@@ -3,9 +3,21 @@ query character($id: ID!) {
     id
     name
     image
+    status
+    species
     gender
+    origin {
+      name
+      type
+    }
     location {
       name
+      type
+    }
+    episode {
+      name
+      air_date
+      episode
     }
   }
 }
