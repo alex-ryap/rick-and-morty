@@ -1,57 +1,112 @@
-import { Grid, Pagination } from '@mui/material';
-import { FC, useState } from 'react';
+import { createRef, FC, useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { CharactersList } from '../components/CharactersList';
+import { CharacterCard } from '../components/CharacterCard';
 import { Loader } from '../components/Loader';
 import { Character, useAllCharactersQuery } from '../graphql/graphql';
-import { Title } from './Home';
 
-const CustomPagination = styled(Pagination)`
-  button[aria-current='true'] {
-    color: white;
-    background-color: #88be43;
+const GridContainer = styled.div`
+  padding: 30px;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(3, 400px);
+  gap: 20px;
+
+  @media (max-width: 1300px) {
+    grid-template-columns: repeat(2, 400px);
+  }
+  @media (max-width: 880px) {
+    grid-template-columns: repeat(2, 350px);
+    gap: 30px;
+  }
+
+  @media (max-width: 780px) {
+    grid-template-columns: 350px;
   }
 `;
 
 export const Characters: FC = () => {
-  const [page, setPage] = useState<number>(1);
-  const { data, loading } = useAllCharactersQuery({
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [lastLoadedPageNum, setLastLoadedPageNum] = useState<number>(0);
+
+  const [pageNum, setPageNum] = useState<number>(1);
+  const lastItem = createRef<HTMLDivElement>();
+  const observerLoader = useRef<IntersectionObserver>();
+
+  const { data, loading, fetchMore } = useAllCharactersQuery({
     variables: {
-      page,
+      page: 1,
     },
   });
 
-  const characters = data?.characters?.results as Character[];
-  const info = data?.characters?.info;
+  useEffect(() => {
+    if (data?.characters?.results) {
+      const newCharacters = (data.characters.results as Character[]) ?? [];
+      setCharacters([...newCharacters]);
+    }
+  }, [data?.characters?.results]);
 
-  const handleChangePage = (
-    event: React.ChangeEvent<unknown>,
-    value: number
-  ) => {
-    setPage(value);
-  };
+  const loadData = useCallback((page: number) => {
+    fetchMore({
+      variables: {
+        page,
+      },
+    }).then(({ data }) => {
+      const newCharacters = (data.characters?.results as Character[]) ?? [];
+      setLastLoadedPageNum(page);
+      setPageNum(page);
+      setCharacters((prev) => [...prev, ...newCharacters]);
+    });
+  }, []);
+
+  const handleObserver = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const [target] = entries;
+      if (target.isIntersecting) {
+        const nextPage = pageNum + 1;
+        const pagesCount = data?.characters?.info?.pages || 1;
+        if (nextPage !== lastLoadedPageNum && nextPage <= pagesCount) {
+          loadData(nextPage);
+        }
+      }
+    },
+    [pageNum, lastLoadedPageNum, loadData, data?.characters?.info?.pages]
+  );
+
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: '50px',
+      threshold: 0,
+    };
+
+    if (observerLoader.current) observerLoader.current.disconnect();
+
+    observerLoader.current = new IntersectionObserver(handleObserver, options);
+    if (lastItem.current) observerLoader.current.observe(lastItem.current);
+  }, [lastItem]);
 
   return loading ? (
     <Loader />
   ) : (
-    <Grid container direction="column" rowSpacing={2} alignItems="center">
-      <Grid item>
-        <Title variant="h3" sx={{ mb: 2 }}>
-          Characters
-        </Title>
-      </Grid>
-      <Grid item>
-        <CharactersList characters={characters} />
-      </Grid>
-      <Grid item mt={3}>
-        {info?.pages && (
-          <CustomPagination
-            count={info?.pages}
-            page={page}
-            onChange={handleChangePage}
-          />
-        )}
-      </Grid>
-    </Grid>
+    <GridContainer>
+      {characters?.map((character, idx) => {
+        if (idx + 1 === characters.length) {
+          return (
+            <CharacterCard
+              key={character?.id}
+              character={character as Character}
+              ref={lastItem}
+            />
+          );
+        } else {
+          return (
+            <CharacterCard
+              key={character?.id}
+              character={character as Character}
+            />
+          );
+        }
+      })}
+    </GridContainer>
   );
 };

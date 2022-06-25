@@ -1,0 +1,7 @@
+query getCountsOfEpisodes {
+  episodes {
+    info {
+      count
+    }
+  }
+}

@@ -1,0 +1,7 @@
+query getCountsOfCharacters {
+  characters {
+    info {
+      count
+    }
+  }
+}
