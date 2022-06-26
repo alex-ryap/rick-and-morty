@@ -4,5 +4,11 @@ query location($id: ID!) {
     name
     type
     dimension
+    residents {
+      id
+      image
+      name
+      species
+    }
   }
 }

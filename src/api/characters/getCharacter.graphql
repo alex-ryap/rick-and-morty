@@ -7,14 +7,17 @@ query character($id: ID!) {
     species
     gender
     origin {
+      id
       name
       type
     }
     location {
+      id
       name
       type
     }
     episode {
+      id
       name
       air_date
       episode

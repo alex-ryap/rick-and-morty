@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Loader } from '../components/Loader';
 import {
@@ -6,6 +7,11 @@ import {
   useGetCountsOfEpisodesQuery,
   useGetCountsOfLocationsQuery,
 } from '../graphql/graphql';
+import {
+  CHARACTERS_PAGE,
+  EPISODES_PAGE,
+  LOCATIONS_PAGE,
+} from '../utils/constants';
 
 const HomeContent = styled.div`
   height: calc(100vh - 73px);
@@ -48,10 +54,16 @@ const Bottom = styled(Part)`
   }
 `;
 
-const Subtitle = styled.h2`
+const Subtitle = styled(Link)`
+  text-decoration: none;
   text-align: center;
   font-size: 25px;
   color: #9e9e9e;
+
+  &:hover {
+    color: #93be61;
+  }
+
   @media (max-width: 1040px) {
     font-size: 18px;
   }
@@ -83,9 +95,11 @@ export const Home: FC = () => {
           <Loader />
         ) : (
           <>
-            <Subtitle>CHARACTERS: {charactersCount}</Subtitle>
-            <Subtitle>LOCATIONS: {locationsCount}</Subtitle>
-            <Subtitle>EPISODES: {episodesCount}</Subtitle>
+            <Subtitle to={CHARACTERS_PAGE}>
+              CHARACTERS: {charactersCount}
+            </Subtitle>
+            <Subtitle to={LOCATIONS_PAGE}>LOCATIONS: {locationsCount}</Subtitle>
+            <Subtitle to={EPISODES_PAGE}>EPISODES: {episodesCount}</Subtitle>
           </>
         )}
       </Bottom>

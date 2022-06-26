@@ -214,7 +214,7 @@ export type CharacterQueryVariables = Exact<{
 }>;
 
 
-export type CharacterQuery = { __typename?: 'Query', character?: { __typename?: 'Character', id?: string | null, name?: string | null, image?: string | null, status?: string | null, species?: string | null, gender?: string | null, origin?: { __typename?: 'Location', name?: string | null, type?: string | null } | null, location?: { __typename?: 'Location', name?: string | null, type?: string | null } | null, episode: Array<{ __typename?: 'Episode', name?: string | null, air_date?: string | null, episode?: string | null } | null> } | null };
+export type CharacterQuery = { __typename?: 'Query', character?: { __typename?: 'Character', id?: string | null, name?: string | null, image?: string | null, status?: string | null, species?: string | null, gender?: string | null, origin?: { __typename?: 'Location', id?: string | null, name?: string | null, type?: string | null } | null, location?: { __typename?: 'Location', id?: string | null, name?: string | null, type?: string | null } | null, episode: Array<{ __typename?: 'Episode', id?: string | null, name?: string | null, air_date?: string | null, episode?: string | null } | null> } | null };
 
 export type GetCountsOfCharactersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -243,14 +243,14 @@ export type LocationQueryVariables = Exact<{
 }>;
 
 
-export type LocationQuery = { __typename?: 'Query', location?: { __typename?: 'Location', id?: string | null, name?: string | null, type?: string | null, dimension?: string | null } | null };
+export type LocationQuery = { __typename?: 'Query', location?: { __typename?: 'Location', id?: string | null, name?: string | null, type?: string | null, dimension?: string | null, residents: Array<{ __typename?: 'Character', id?: string | null, image?: string | null, name?: string | null, species?: string | null } | null> } | null };
 
 export type LocationsQueryVariables = Exact<{
   page?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type LocationsQuery = { __typename?: 'Query', locations?: { __typename?: 'Locations', results?: Array<{ __typename?: 'Location', id?: string | null, name?: string | null, type?: string | null, dimension?: string | null } | null> | null } | null };
+export type LocationsQuery = { __typename?: 'Query', locations?: { __typename?: 'Locations', info?: { __typename?: 'Info', pages?: number | null } | null, results?: Array<{ __typename?: 'Location', id?: string | null, name?: string | null, type?: string | null } | null> | null } | null };
 
 export type LocationsByIdsQueryVariables = Exact<{
   ids: Array<Scalars['ID']> | Scalars['ID'];
@@ -316,14 +316,17 @@ export const CharacterDocument = gql`
     species
     gender
     origin {
+      id
       name
       type
     }
     location {
+      id
       name
       type
     }
     episode {
+      id
       name
       air_date
       episode
@@ -515,6 +518,12 @@ export const LocationDocument = gql`
     name
     type
     dimension
+    residents {
+      id
+      image
+      name
+      species
+    }
   }
 }
     `;
@@ -549,11 +558,13 @@ export type LocationQueryResult = Apollo.QueryResult<LocationQuery, LocationQuer
 export const LocationsDocument = gql`
     query locations($page: Int) {
   locations(page: $page) {
+    info {
+      pages
+    }
     results {
       id
       name
       type
-      dimension
     }
   }
 }

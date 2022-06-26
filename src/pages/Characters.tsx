@@ -1,26 +1,22 @@
 import { createRef, FC, useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { CharacterCard } from '../components/CharacterCard';
+import { Container } from '../components/Layout';
 import { Loader } from '../components/Loader';
 import { Character, useAllCharactersQuery } from '../graphql/graphql';
 
-const GridContainer = styled.div`
-  padding: 30px;
+export const GridContainer = styled.div`
   display: grid;
   justify-content: center;
-  grid-template-columns: repeat(3, 400px);
-  gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
 
-  @media (max-width: 1300px) {
-    grid-template-columns: repeat(2, 400px);
+  @media (max-width: 1140px) {
+    grid-template-columns: repeat(3, 1fr);
   }
+
   @media (max-width: 880px) {
-    grid-template-columns: repeat(2, 350px);
-    gap: 30px;
-  }
-
-  @media (max-width: 780px) {
-    grid-template-columns: 350px;
+    grid-template-columns: repeat(2, 1fr);
   }
 `;
 
@@ -90,25 +86,27 @@ export const Characters: FC = () => {
   return loading ? (
     <Loader />
   ) : (
-    <GridContainer>
-      {characters?.map((character, idx) => {
-        if (idx + 1 === characters.length) {
-          return (
-            <CharacterCard
-              key={character?.id}
-              character={character as Character}
-              ref={lastItem}
-            />
-          );
-        } else {
-          return (
-            <CharacterCard
-              key={character?.id}
-              character={character as Character}
-            />
-          );
-        }
-      })}
-    </GridContainer>
+    <Container>
+      <GridContainer>
+        {characters?.map((character, idx) => {
+          if (idx + 1 === characters.length) {
+            return (
+              <CharacterCard
+                key={character?.id}
+                character={character as Character}
+                ref={lastItem}
+              />
+            );
+          } else {
+            return (
+              <CharacterCard
+                key={character?.id}
+                character={character as Character}
+              />
+            );
+          }
+        })}
+      </GridContainer>
+    </Container>
   );
 };
