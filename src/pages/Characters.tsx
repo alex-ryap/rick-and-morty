@@ -56,6 +56,7 @@ export const Characters: FC = () => {
       setPageNum(page);
       setCharacters((prev) => [...prev, ...newCharacters]);
     });
+    // eslint-disable-next-line
   }, []);
 
   const handleObserver = useCallback(
@@ -83,6 +84,7 @@ export const Characters: FC = () => {
 
     observerLoader.current = new IntersectionObserver(handleObserver, options);
     if (lastItem.current) observerLoader.current.observe(lastItem.current);
+    // eslint-disable-next-line
   }, [lastItem]);
 
   return loading ? (

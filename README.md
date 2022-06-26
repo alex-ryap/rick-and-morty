@@ -4,4 +4,4 @@ This project was created for learning and working with GraphQL, Apollo, GraphQL 
 
 ## Link on Netlify project
 
-Link:
+Link: https://rick-and-morty-gql.netlify.app/
