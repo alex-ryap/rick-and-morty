@@ -6,7 +6,7 @@ import { EpisodeCard } from '../components/EpisodeCard';
 import { Container } from '../components/Layout';
 import { Loader } from '../components/Loader';
 import { Episode, useCharacterQuery } from '../graphql/graphql';
-import { CHARACTERS_PAGE, LOCATIONS_PAGE } from '../utils/constants';
+import { LOCATIONS_PAGE } from '../utils/constants';
 import { Paper } from './Location';
 
 const Content = styled.div`
