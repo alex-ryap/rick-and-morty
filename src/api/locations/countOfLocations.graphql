@@ -1,4 +1,4 @@
-query getCountsOfLocations {
+query countOfLocations {
   locations {
     info {
       count

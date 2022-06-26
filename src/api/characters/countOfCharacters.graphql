@@ -1,4 +1,4 @@
-query getCountsOfCharacters {
+query countOfCharacters {
   characters {
     info {
       count

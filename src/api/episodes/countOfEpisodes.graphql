@@ -1,4 +1,4 @@
-query getCountsOfEpisodes {
+query countOfEpisodes {
   episodes {
     info {
       count

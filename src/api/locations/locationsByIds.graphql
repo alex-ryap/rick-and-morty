@@ -1,8 +1,0 @@
-query locationsByIds($ids: [ID!]!) {
-  locationsByIds(ids: $ids) {
-    id
-    name
-    type
-    dimension
-  }
-}
