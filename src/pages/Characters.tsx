@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { CharacterCard } from '../components/CharacterCard';
 import { Container } from '../components/Layout';
 import { Loader } from '../components/Loader';
-import { Character, useAllCharactersQuery } from '../graphql/graphql';
+import { Character, useCharactersQuery } from '../graphql/graphql';
 
 export const GridContainer = styled.div`
   display: grid;
@@ -28,7 +28,7 @@ export const Characters: FC = () => {
   const lastItem = createRef<HTMLDivElement>();
   const observerLoader = useRef<IntersectionObserver>();
 
-  const { data, loading, fetchMore } = useAllCharactersQuery({
+  const { data, loading, fetchMore } = useCharactersQuery({
     variables: {
       page: 1,
     },

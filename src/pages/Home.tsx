@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Loader } from '../components/Loader';
 import {
-  useGetCountsOfCharactersQuery,
-  useGetCountsOfEpisodesQuery,
-  useGetCountsOfLocationsQuery,
+  useCountOfCharactersQuery,
+  useCountOfEpisodesQuery,
+  useCountOfLocationsQuery,
 } from '../graphql/graphql';
 import {
   CHARACTERS_PAGE,
@@ -75,11 +75,11 @@ const Subtitle = styled(Link)`
 
 export const Home: FC = () => {
   const { data: charactersData, loading: charactersLoading } =
-    useGetCountsOfCharactersQuery();
+    useCountOfCharactersQuery();
   const { data: locationsData, loading: locationsLoading } =
-    useGetCountsOfLocationsQuery();
+    useCountOfLocationsQuery();
   const { data: episodesData, loading: episodesLoading } =
-    useGetCountsOfEpisodesQuery();
+    useCountOfEpisodesQuery();
 
   const charactersCount = charactersData?.characters?.info?.count;
   const locationsCount = locationsData?.locations?.info?.count;

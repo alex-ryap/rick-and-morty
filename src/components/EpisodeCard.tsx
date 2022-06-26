@@ -46,7 +46,9 @@ const EpisodeComponent = forwardRef<HTMLHeadingElement, IEpisodeCardProps>(
 
     return (
       <Card ref={ref} onClick={handleClick}>
-        <Subtitle>{episode.air_date}</Subtitle>
+        <Subtitle>
+          <span>{episode.episode}</span> - {episode.air_date}
+        </Subtitle>
         <Title>{episode.name}</Title>
       </Card>
     );

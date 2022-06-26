@@ -202,13 +202,6 @@ export type QueryLocationsByIdsArgs = {
   ids: Array<Scalars['ID']>;
 };
 
-export type AllCharactersQueryVariables = Exact<{
-  page?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type AllCharactersQuery = { __typename?: 'Query', characters?: { __typename?: 'Characters', info?: { __typename?: 'Info', count?: number | null, pages?: number | null } | null, results?: Array<{ __typename?: 'Character', id?: string | null, name?: string | null, image?: string | null, gender?: string | null, status?: string | null, species?: string | null } | null> | null } | null };
-
 export type CharacterQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -216,27 +209,41 @@ export type CharacterQueryVariables = Exact<{
 
 export type CharacterQuery = { __typename?: 'Query', character?: { __typename?: 'Character', id?: string | null, name?: string | null, image?: string | null, status?: string | null, species?: string | null, gender?: string | null, origin?: { __typename?: 'Location', id?: string | null, name?: string | null, type?: string | null } | null, location?: { __typename?: 'Location', id?: string | null, name?: string | null, type?: string | null } | null, episode: Array<{ __typename?: 'Episode', id?: string | null, name?: string | null, air_date?: string | null, episode?: string | null } | null> } | null };
 
-export type GetCountsOfCharactersQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetCountsOfCharactersQuery = { __typename?: 'Query', characters?: { __typename?: 'Characters', info?: { __typename?: 'Info', count?: number | null } | null } | null };
-
-export type CharactersByIdsQueryVariables = Exact<{
-  ids: Array<Scalars['ID']> | Scalars['ID'];
+export type CharactersQueryVariables = Exact<{
+  page?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type CharactersByIdsQuery = { __typename?: 'Query', charactersByIds?: Array<{ __typename?: 'Character', id?: string | null, name?: string | null, image?: string | null, gender?: string | null, location?: { __typename?: 'Location', name?: string | null } | null } | null> | null };
+export type CharactersQuery = { __typename?: 'Query', characters?: { __typename?: 'Characters', info?: { __typename?: 'Info', count?: number | null, pages?: number | null } | null, results?: Array<{ __typename?: 'Character', id?: string | null, name?: string | null, image?: string | null, gender?: string | null, status?: string | null, species?: string | null } | null> | null } | null };
 
-export type GetCountsOfEpisodesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetCountsOfEpisodesQuery = { __typename?: 'Query', episodes?: { __typename?: 'Episodes', info?: { __typename?: 'Info', count?: number | null } | null } | null };
-
-export type GetCountsOfLocationsQueryVariables = Exact<{ [key: string]: never; }>;
+export type CountOfCharactersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCountsOfLocationsQuery = { __typename?: 'Query', locations?: { __typename?: 'Locations', info?: { __typename?: 'Info', count?: number | null } | null } | null };
+export type CountOfCharactersQuery = { __typename?: 'Query', characters?: { __typename?: 'Characters', info?: { __typename?: 'Info', count?: number | null } | null } | null };
+
+export type CountOfEpisodesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CountOfEpisodesQuery = { __typename?: 'Query', episodes?: { __typename?: 'Episodes', info?: { __typename?: 'Info', count?: number | null } | null } | null };
+
+export type EpisodeQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type EpisodeQuery = { __typename?: 'Query', episode?: { __typename?: 'Episode', id?: string | null, name?: string | null, air_date?: string | null, episode?: string | null, characters: Array<{ __typename?: 'Character', id?: string | null, image?: string | null, name?: string | null, species?: string | null } | null> } | null };
+
+export type EpisodesQueryVariables = Exact<{
+  page?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type EpisodesQuery = { __typename?: 'Query', episodes?: { __typename?: 'Episodes', info?: { __typename?: 'Info', pages?: number | null } | null, results?: Array<{ __typename?: 'Episode', id?: string | null, name?: string | null, air_date?: string | null, episode?: string | null } | null> | null } | null };
+
+export type CountOfLocationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CountOfLocationsQuery = { __typename?: 'Query', locations?: { __typename?: 'Locations', info?: { __typename?: 'Info', count?: number | null } | null } | null };
 
 export type LocationQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -252,60 +259,7 @@ export type LocationsQueryVariables = Exact<{
 
 export type LocationsQuery = { __typename?: 'Query', locations?: { __typename?: 'Locations', info?: { __typename?: 'Info', pages?: number | null } | null, results?: Array<{ __typename?: 'Location', id?: string | null, name?: string | null, type?: string | null } | null> | null } | null };
 
-export type LocationsByIdsQueryVariables = Exact<{
-  ids: Array<Scalars['ID']> | Scalars['ID'];
-}>;
 
-
-export type LocationsByIdsQuery = { __typename?: 'Query', locationsByIds?: Array<{ __typename?: 'Location', id?: string | null, name?: string | null, type?: string | null, dimension?: string | null } | null> | null };
-
-
-export const AllCharactersDocument = gql`
-    query allCharacters($page: Int) {
-  characters(page: $page) {
-    info {
-      count
-      pages
-    }
-    results {
-      id
-      name
-      image
-      gender
-      status
-      species
-    }
-  }
-}
-    `;
-
-/**
- * __useAllCharactersQuery__
- *
- * To run a query within a React component, call `useAllCharactersQuery` and pass it any options that fit your needs.
- * When your component renders, `useAllCharactersQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useAllCharactersQuery({
- *   variables: {
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useAllCharactersQuery(baseOptions?: Apollo.QueryHookOptions<AllCharactersQuery, AllCharactersQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AllCharactersQuery, AllCharactersQueryVariables>(AllCharactersDocument, options);
-      }
-export function useAllCharactersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllCharactersQuery, AllCharactersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AllCharactersQuery, AllCharactersQueryVariables>(AllCharactersDocument, options);
-        }
-export type AllCharactersQueryHookResult = ReturnType<typeof useAllCharactersQuery>;
-export type AllCharactersLazyQueryHookResult = ReturnType<typeof useAllCharactersLazyQuery>;
-export type AllCharactersQueryResult = Apollo.QueryResult<AllCharactersQuery, AllCharactersQueryVariables>;
 export const CharacterDocument = gql`
     query character($id: ID!) {
   character(id: $id) {
@@ -362,8 +316,54 @@ export function useCharacterLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type CharacterQueryHookResult = ReturnType<typeof useCharacterQuery>;
 export type CharacterLazyQueryHookResult = ReturnType<typeof useCharacterLazyQuery>;
 export type CharacterQueryResult = Apollo.QueryResult<CharacterQuery, CharacterQueryVariables>;
-export const GetCountsOfCharactersDocument = gql`
-    query getCountsOfCharacters {
+export const CharactersDocument = gql`
+    query characters($page: Int) {
+  characters(page: $page) {
+    info {
+      count
+      pages
+    }
+    results {
+      id
+      name
+      image
+      gender
+      status
+      species
+    }
+  }
+}
+    `;
+
+/**
+ * __useCharactersQuery__
+ *
+ * To run a query within a React component, call `useCharactersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCharactersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCharactersQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useCharactersQuery(baseOptions?: Apollo.QueryHookOptions<CharactersQuery, CharactersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CharactersQuery, CharactersQueryVariables>(CharactersDocument, options);
+      }
+export function useCharactersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CharactersQuery, CharactersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CharactersQuery, CharactersQueryVariables>(CharactersDocument, options);
+        }
+export type CharactersQueryHookResult = ReturnType<typeof useCharactersQuery>;
+export type CharactersLazyQueryHookResult = ReturnType<typeof useCharactersLazyQuery>;
+export type CharactersQueryResult = Apollo.QueryResult<CharactersQuery, CharactersQueryVariables>;
+export const CountOfCharactersDocument = gql`
+    query countOfCharacters {
   characters {
     info {
       count
@@ -373,74 +373,33 @@ export const GetCountsOfCharactersDocument = gql`
     `;
 
 /**
- * __useGetCountsOfCharactersQuery__
+ * __useCountOfCharactersQuery__
  *
- * To run a query within a React component, call `useGetCountsOfCharactersQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetCountsOfCharactersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useCountOfCharactersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCountOfCharactersQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetCountsOfCharactersQuery({
+ * const { data, loading, error } = useCountOfCharactersQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetCountsOfCharactersQuery(baseOptions?: Apollo.QueryHookOptions<GetCountsOfCharactersQuery, GetCountsOfCharactersQueryVariables>) {
+export function useCountOfCharactersQuery(baseOptions?: Apollo.QueryHookOptions<CountOfCharactersQuery, CountOfCharactersQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetCountsOfCharactersQuery, GetCountsOfCharactersQueryVariables>(GetCountsOfCharactersDocument, options);
+        return Apollo.useQuery<CountOfCharactersQuery, CountOfCharactersQueryVariables>(CountOfCharactersDocument, options);
       }
-export function useGetCountsOfCharactersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCountsOfCharactersQuery, GetCountsOfCharactersQueryVariables>) {
+export function useCountOfCharactersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CountOfCharactersQuery, CountOfCharactersQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetCountsOfCharactersQuery, GetCountsOfCharactersQueryVariables>(GetCountsOfCharactersDocument, options);
+          return Apollo.useLazyQuery<CountOfCharactersQuery, CountOfCharactersQueryVariables>(CountOfCharactersDocument, options);
         }
-export type GetCountsOfCharactersQueryHookResult = ReturnType<typeof useGetCountsOfCharactersQuery>;
-export type GetCountsOfCharactersLazyQueryHookResult = ReturnType<typeof useGetCountsOfCharactersLazyQuery>;
-export type GetCountsOfCharactersQueryResult = Apollo.QueryResult<GetCountsOfCharactersQuery, GetCountsOfCharactersQueryVariables>;
-export const CharactersByIdsDocument = gql`
-    query charactersByIds($ids: [ID!]!) {
-  charactersByIds(ids: $ids) {
-    id
-    name
-    image
-    gender
-    location {
-      name
-    }
-  }
-}
-    `;
-
-/**
- * __useCharactersByIdsQuery__
- *
- * To run a query within a React component, call `useCharactersByIdsQuery` and pass it any options that fit your needs.
- * When your component renders, `useCharactersByIdsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useCharactersByIdsQuery({
- *   variables: {
- *      ids: // value for 'ids'
- *   },
- * });
- */
-export function useCharactersByIdsQuery(baseOptions: Apollo.QueryHookOptions<CharactersByIdsQuery, CharactersByIdsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<CharactersByIdsQuery, CharactersByIdsQueryVariables>(CharactersByIdsDocument, options);
-      }
-export function useCharactersByIdsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CharactersByIdsQuery, CharactersByIdsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<CharactersByIdsQuery, CharactersByIdsQueryVariables>(CharactersByIdsDocument, options);
-        }
-export type CharactersByIdsQueryHookResult = ReturnType<typeof useCharactersByIdsQuery>;
-export type CharactersByIdsLazyQueryHookResult = ReturnType<typeof useCharactersByIdsLazyQuery>;
-export type CharactersByIdsQueryResult = Apollo.QueryResult<CharactersByIdsQuery, CharactersByIdsQueryVariables>;
-export const GetCountsOfEpisodesDocument = gql`
-    query getCountsOfEpisodes {
+export type CountOfCharactersQueryHookResult = ReturnType<typeof useCountOfCharactersQuery>;
+export type CountOfCharactersLazyQueryHookResult = ReturnType<typeof useCountOfCharactersLazyQuery>;
+export type CountOfCharactersQueryResult = Apollo.QueryResult<CountOfCharactersQuery, CountOfCharactersQueryVariables>;
+export const CountOfEpisodesDocument = gql`
+    query countOfEpisodes {
   episodes {
     info {
       count
@@ -450,33 +409,120 @@ export const GetCountsOfEpisodesDocument = gql`
     `;
 
 /**
- * __useGetCountsOfEpisodesQuery__
+ * __useCountOfEpisodesQuery__
  *
- * To run a query within a React component, call `useGetCountsOfEpisodesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetCountsOfEpisodesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useCountOfEpisodesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCountOfEpisodesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetCountsOfEpisodesQuery({
+ * const { data, loading, error } = useCountOfEpisodesQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetCountsOfEpisodesQuery(baseOptions?: Apollo.QueryHookOptions<GetCountsOfEpisodesQuery, GetCountsOfEpisodesQueryVariables>) {
+export function useCountOfEpisodesQuery(baseOptions?: Apollo.QueryHookOptions<CountOfEpisodesQuery, CountOfEpisodesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetCountsOfEpisodesQuery, GetCountsOfEpisodesQueryVariables>(GetCountsOfEpisodesDocument, options);
+        return Apollo.useQuery<CountOfEpisodesQuery, CountOfEpisodesQueryVariables>(CountOfEpisodesDocument, options);
       }
-export function useGetCountsOfEpisodesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCountsOfEpisodesQuery, GetCountsOfEpisodesQueryVariables>) {
+export function useCountOfEpisodesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CountOfEpisodesQuery, CountOfEpisodesQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetCountsOfEpisodesQuery, GetCountsOfEpisodesQueryVariables>(GetCountsOfEpisodesDocument, options);
+          return Apollo.useLazyQuery<CountOfEpisodesQuery, CountOfEpisodesQueryVariables>(CountOfEpisodesDocument, options);
         }
-export type GetCountsOfEpisodesQueryHookResult = ReturnType<typeof useGetCountsOfEpisodesQuery>;
-export type GetCountsOfEpisodesLazyQueryHookResult = ReturnType<typeof useGetCountsOfEpisodesLazyQuery>;
-export type GetCountsOfEpisodesQueryResult = Apollo.QueryResult<GetCountsOfEpisodesQuery, GetCountsOfEpisodesQueryVariables>;
-export const GetCountsOfLocationsDocument = gql`
-    query getCountsOfLocations {
+export type CountOfEpisodesQueryHookResult = ReturnType<typeof useCountOfEpisodesQuery>;
+export type CountOfEpisodesLazyQueryHookResult = ReturnType<typeof useCountOfEpisodesLazyQuery>;
+export type CountOfEpisodesQueryResult = Apollo.QueryResult<CountOfEpisodesQuery, CountOfEpisodesQueryVariables>;
+export const EpisodeDocument = gql`
+    query episode($id: ID!) {
+  episode(id: $id) {
+    id
+    name
+    air_date
+    episode
+    characters {
+      id
+      image
+      name
+      species
+    }
+  }
+}
+    `;
+
+/**
+ * __useEpisodeQuery__
+ *
+ * To run a query within a React component, call `useEpisodeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useEpisodeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useEpisodeQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useEpisodeQuery(baseOptions: Apollo.QueryHookOptions<EpisodeQuery, EpisodeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<EpisodeQuery, EpisodeQueryVariables>(EpisodeDocument, options);
+      }
+export function useEpisodeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EpisodeQuery, EpisodeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<EpisodeQuery, EpisodeQueryVariables>(EpisodeDocument, options);
+        }
+export type EpisodeQueryHookResult = ReturnType<typeof useEpisodeQuery>;
+export type EpisodeLazyQueryHookResult = ReturnType<typeof useEpisodeLazyQuery>;
+export type EpisodeQueryResult = Apollo.QueryResult<EpisodeQuery, EpisodeQueryVariables>;
+export const EpisodesDocument = gql`
+    query episodes($page: Int) {
+  episodes(page: $page) {
+    info {
+      pages
+    }
+    results {
+      id
+      name
+      air_date
+      episode
+    }
+  }
+}
+    `;
+
+/**
+ * __useEpisodesQuery__
+ *
+ * To run a query within a React component, call `useEpisodesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useEpisodesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useEpisodesQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useEpisodesQuery(baseOptions?: Apollo.QueryHookOptions<EpisodesQuery, EpisodesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<EpisodesQuery, EpisodesQueryVariables>(EpisodesDocument, options);
+      }
+export function useEpisodesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EpisodesQuery, EpisodesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<EpisodesQuery, EpisodesQueryVariables>(EpisodesDocument, options);
+        }
+export type EpisodesQueryHookResult = ReturnType<typeof useEpisodesQuery>;
+export type EpisodesLazyQueryHookResult = ReturnType<typeof useEpisodesLazyQuery>;
+export type EpisodesQueryResult = Apollo.QueryResult<EpisodesQuery, EpisodesQueryVariables>;
+export const CountOfLocationsDocument = gql`
+    query countOfLocations {
   locations {
     info {
       count
@@ -486,31 +532,31 @@ export const GetCountsOfLocationsDocument = gql`
     `;
 
 /**
- * __useGetCountsOfLocationsQuery__
+ * __useCountOfLocationsQuery__
  *
- * To run a query within a React component, call `useGetCountsOfLocationsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetCountsOfLocationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useCountOfLocationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCountOfLocationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetCountsOfLocationsQuery({
+ * const { data, loading, error } = useCountOfLocationsQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetCountsOfLocationsQuery(baseOptions?: Apollo.QueryHookOptions<GetCountsOfLocationsQuery, GetCountsOfLocationsQueryVariables>) {
+export function useCountOfLocationsQuery(baseOptions?: Apollo.QueryHookOptions<CountOfLocationsQuery, CountOfLocationsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetCountsOfLocationsQuery, GetCountsOfLocationsQueryVariables>(GetCountsOfLocationsDocument, options);
+        return Apollo.useQuery<CountOfLocationsQuery, CountOfLocationsQueryVariables>(CountOfLocationsDocument, options);
       }
-export function useGetCountsOfLocationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCountsOfLocationsQuery, GetCountsOfLocationsQueryVariables>) {
+export function useCountOfLocationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CountOfLocationsQuery, CountOfLocationsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetCountsOfLocationsQuery, GetCountsOfLocationsQueryVariables>(GetCountsOfLocationsDocument, options);
+          return Apollo.useLazyQuery<CountOfLocationsQuery, CountOfLocationsQueryVariables>(CountOfLocationsDocument, options);
         }
-export type GetCountsOfLocationsQueryHookResult = ReturnType<typeof useGetCountsOfLocationsQuery>;
-export type GetCountsOfLocationsLazyQueryHookResult = ReturnType<typeof useGetCountsOfLocationsLazyQuery>;
-export type GetCountsOfLocationsQueryResult = Apollo.QueryResult<GetCountsOfLocationsQuery, GetCountsOfLocationsQueryVariables>;
+export type CountOfLocationsQueryHookResult = ReturnType<typeof useCountOfLocationsQuery>;
+export type CountOfLocationsLazyQueryHookResult = ReturnType<typeof useCountOfLocationsLazyQuery>;
+export type CountOfLocationsQueryResult = Apollo.QueryResult<CountOfLocationsQuery, CountOfLocationsQueryVariables>;
 export const LocationDocument = gql`
     query location($id: ID!) {
   location(id: $id) {
@@ -597,41 +643,3 @@ export function useLocationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type LocationsQueryHookResult = ReturnType<typeof useLocationsQuery>;
 export type LocationsLazyQueryHookResult = ReturnType<typeof useLocationsLazyQuery>;
 export type LocationsQueryResult = Apollo.QueryResult<LocationsQuery, LocationsQueryVariables>;
-export const LocationsByIdsDocument = gql`
-    query locationsByIds($ids: [ID!]!) {
-  locationsByIds(ids: $ids) {
-    id
-    name
-    type
-    dimension
-  }
-}
-    `;
-
-/**
- * __useLocationsByIdsQuery__
- *
- * To run a query within a React component, call `useLocationsByIdsQuery` and pass it any options that fit your needs.
- * When your component renders, `useLocationsByIdsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useLocationsByIdsQuery({
- *   variables: {
- *      ids: // value for 'ids'
- *   },
- * });
- */
-export function useLocationsByIdsQuery(baseOptions: Apollo.QueryHookOptions<LocationsByIdsQuery, LocationsByIdsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<LocationsByIdsQuery, LocationsByIdsQueryVariables>(LocationsByIdsDocument, options);
-      }
-export function useLocationsByIdsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LocationsByIdsQuery, LocationsByIdsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<LocationsByIdsQuery, LocationsByIdsQueryVariables>(LocationsByIdsDocument, options);
-        }
-export type LocationsByIdsQueryHookResult = ReturnType<typeof useLocationsByIdsQuery>;
-export type LocationsByIdsLazyQueryHookResult = ReturnType<typeof useLocationsByIdsLazyQuery>;
-export type LocationsByIdsQueryResult = Apollo.QueryResult<LocationsByIdsQuery, LocationsByIdsQueryVariables>;
