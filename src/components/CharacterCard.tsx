@@ -6,6 +6,7 @@ import { CHARACTERS_PAGE } from '../utils/constants';
 
 const Card = styled.div`
   display: flex;
+  flex-direction: column;
   cursor: pointer;
   border-radius: 10px;
   background-color: rgb(60, 62, 68);
@@ -21,22 +22,14 @@ const Card = styled.div`
   &:hover h3 {
     color: #bff77e;
   }
-
-  @media (max-width: 880px) {
-    flex-direction: column;
-    font-size: 18px;
-  }
 `;
 
 const CardMedia = styled.img`
-  width: 150px;
-  @media (max-width: 880px) {
-    width: 100%;
-  }
+  width: 100%;
 `;
 
 const CardContent = styled.div`
-  padding: 10px 15px;
+  padding: 10px 15px 30px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -47,19 +40,13 @@ const Title = styled.h3`
   text-decoration: none;
   font-size: 1.4rem;
   color: white;
+  word-wrap: break-word;
   transition: 0.2s all;
-
-  @media (max-width: 880px) {
-    font-size: 2rem;
-  }
 `;
 
 const Subtitle = styled.p`
   color: #999;
   font-size: 1rem;
-  @media (max-width: 880px) {
-    font-size: 1.5rem;
-  }
 `;
 
 interface IStatus {

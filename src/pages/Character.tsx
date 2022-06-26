@@ -1,130 +1,100 @@
 import { FC } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Status } from '../components/CharacterCard';
+import { EpisodeCard } from '../components/EpisodeCard';
+import { Container } from '../components/Layout';
 import { Loader } from '../components/Loader';
-import { useCharacterQuery } from '../graphql/graphql';
+import { Episode, useCharacterQuery } from '../graphql/graphql';
+import { LOCATIONS_PAGE } from '../utils/constants';
+import { Paper } from './Location';
 
-const CharacterContainer = styled.div`
-  max-width: 1140px;
-  margin: 0 auto;
-  padding: 30px;
+const Content = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
-`;
+  color: #fff;
+  gap: 50px;
 
-const BackButton = styled.button`
-  align-self: flex-start;
-  padding: 10px 15px;
-  background-color: transparent;
-  border: 1px solid #88be43;
-  border-radius: 5px;
-  color: #88be43;
-  text-decoration: none;
-  text-transform: uppercase;
-  cursor: pointer;
+  @media (max-width: 900px) {
+    flex-direction: column;
+    gap: 20px;
+  }
 `;
 
 const CharacterData = styled.div`
-  color: #fff;
+  width: 300px;
   display: flex;
-  gap: 50px;
+  flex-direction: column;
+  gap: 10px;
 
-  @media (max-width: 820px) {
+  @media (max-width: 900px) {
+    width: 100%;
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  @media (max-width: 550px) {
     flex-direction: column;
   }
 `;
 
-const CharacterImage = styled.img`
-  width: 350px;
-  @media (max-width: 1140px) {
-    width: 300px;
-  }
+const MainData = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 
-  @media (max-width: 820px) {
-    width: 350px;
+  @media (max-width: 900px) {
+    flex-grow: 1;
   }
 `;
 
-const MainData = styled.div`
+const SubData = styled(Paper)`
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
+const Field = styled.p`
+  color: #999;
+  font-size: 1.2rem;
+`;
+
+const FieldValue = styled.span`
+  margin-left: 20px;
+  font-weight: 700;
+  color: #fff;
+`;
+
+const FieldValueLink = styled(Link)`
+  text-decoration: none;
+  margin-left: 20px;
+  font-weight: 700;
+  color: #fff;
+
+  &:hover {
+    color: #93be61;
+  }
+`;
+
+const Episodes = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   gap: 20px;
 `;
 
-const SubData = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const Name = styled.h2`
-  font-size: 2.3rem;
-
-  @media (max-width: 1140px) {
-    font-size: 1.8rem;
-  }
-`;
-
-const Species = styled.p`
-  font-size: 1.5rem;
-  color: #999;
-
-  & > span {
-    margin-left: 5px;
-  }
-
-  @media (max-width: 1140px) {
-    font-size: 1.1rem;
-  }
-`;
-
-const Field = styled.p`
-  color: #999;
-  font-size: 1.2rem;
-
-  & > span {
-    margin-left: 20px;
-    text-transform: uppercase;
-    color: #fff;
-  }
-
-  @media (max-width: 1140px) {
-    font-size: 1rem;
-  }
-`;
-
-const Episodes = styled.div`
-  margin-top: 30px;
-  display: flex;
-  align-items: baseline;
-  gap: 20px;
-`;
-
-const EpisodesList = styled.ul`
-  padding: 0;
-  color: #fff;
-  list-style-type: none;
+const EpisodesList = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   gap: 10px;
-
-  @media (max-width: 1140px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  @media (max-width: 1040px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  @media (max-width: 820px) {
-    grid-template-columns: 1fr;
-  }
 `;
 
-export const Character: FC = () => {
-  const navigate = useNavigate();
+const Title = styled.h3`
+  font-size: 2rem;
+  color: white;
+`;
+
+export const CharacterPage: FC = () => {
   const { characterId } = useParams();
 
   const { data, loading } = useCharacterQuery({
@@ -135,63 +105,64 @@ export const Character: FC = () => {
 
   const character = data?.character;
 
-  const handleBack = () => {
-    navigate(-1);
-  };
-
   return loading ? (
     <Loader />
   ) : character ? (
-    <CharacterContainer>
-      <BackButton onClick={handleBack}>Back</BackButton>
-      <CharacterData>
-        <CharacterImage src={character.image || ''} alt="Character avatar" />
-        <MainData>
-          <div>
-            <Name>{character.name}</Name>
-            <Species>
-              {character.species}{' '}
-              <Status
-                color={
-                  character.status === 'Alive'
-                    ? '#93be61'
-                    : character.status === 'Dead'
-                    ? '#dd7f6e'
-                    : '#b8b803'
-                }
-              >
-                {character.status}
-              </Status>
-            </Species>
-          </div>
+    <Container>
+      <Content>
+        <CharacterData>
+          <img src={character.image || ''} alt="Character avatar" />
+          <MainData>
+            <Title>{character.name}</Title>
+            <Status
+              color={
+                character.status === 'Alive'
+                  ? '#93be61'
+                  : character.status === 'Dead'
+                  ? '#dd7f6e'
+                  : '#b8b803'
+              }
+            >
+              {character.status?.toLowerCase()}
+            </Status>
+          </MainData>
+        </CharacterData>
+        <Episodes>
+          <Title>About</Title>
           <SubData>
             <Field>
-              Gender: <span>{character.gender}</span>
+              Gender: <FieldValue>{character.gender}</FieldValue>
+            </Field>
+            <Field>
+              Species: <FieldValue>{character.species}</FieldValue>
             </Field>
             <Field>
               Born place:
-              <span>
+              <FieldValueLink to={`${LOCATIONS_PAGE}/${character?.origin?.id}`}>
                 {character.origin?.type} - {character.origin?.name}
-              </span>
+              </FieldValueLink>
             </Field>
             <Field>
               Last location:{' '}
-              <span>
+              <FieldValueLink
+                to={`${LOCATIONS_PAGE}/${character?.location?.id}`}
+              >
                 {character.location?.type} - {character.location?.name}
-              </span>
+              </FieldValueLink>
             </Field>
           </SubData>
-        </MainData>
-      </CharacterData>
-      <Episodes>
-        <Field>Episodes:</Field>
-        <EpisodesList>
-          {character.episode.map((episode) => (
-            <li key={episode?.episode}>{episode?.name}</li>
-          ))}
-        </EpisodesList>
-      </Episodes>
-    </CharacterContainer>
+          <Title>Episodes</Title>
+          <EpisodesList>
+            {character.episode.map((episode) => (
+              <EpisodeCard
+                key={episode?.episode}
+                episode={episode as Episode}
+              />
+            ))}
+          </EpisodesList>
+        </Episodes>
+      </Content>
+    </Container>
   ) : (
     <h2>Character not founded</h2>
   );

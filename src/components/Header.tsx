@@ -32,7 +32,7 @@ const CustomNavLink = styled(NavLink)`
   transition: 0.3s all;
 
   &:hover {
-    color: #88be43;
+    color: #93be61;
   }
 
   &.active {

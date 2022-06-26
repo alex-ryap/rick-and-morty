@@ -1,10 +1,12 @@
 query locations($page: Int) {
   locations(page: $page) {
+    info {
+      pages
+    }
     results {
       id
       name
       type
-      dimension
     }
   }
 }
