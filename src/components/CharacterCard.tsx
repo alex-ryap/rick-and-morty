@@ -75,7 +75,7 @@ const CharacterComponent = forwardRef<HTMLDivElement, ICharacterCardProps>(
     }, [navigate, character.id]);
 
     return (
-      <Card onClick={handleClick} ref={ref}>
+      <Card style={{ minHeight: 300 }} onClick={handleClick} ref={ref}>
         <CardMedia src={character.image ?? ''} alt="Character avatar" />
         <CardContent>
           <Title>{character.name}</Title>

@@ -1,9 +1,10 @@
-import { createRef, FC, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { EpisodeCard } from '../components/EpisodeCard';
 import { Container } from '../components/Layout';
 import { Loader } from '../components/Loader';
 import { Episode, useEpisodesQuery } from '../graphql/graphql';
+import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
 
 const GridContainer = styled.div`
   display: grid;
@@ -21,18 +22,22 @@ const GridContainer = styled.div`
 `;
 
 export const Episodes: FC = () => {
+  const [page, setPage] = useState<number>(1);
   const [episodes, setEpisodes] = useState<Episode[]>([]);
-  const [lastLoadedPageNum, setLastLoadedPageNum] = useState<number>(0);
-
-  const [pageNum, setPageNum] = useState<number>(1);
-  const lastItem = createRef<HTMLDivElement>();
-  const observerLoader = useRef<IntersectionObserver>();
+  const [isActive, setIsActive] = useState<boolean>(true);
 
   const { data, loading, fetchMore } = useEpisodesQuery({
     variables: {
       page: 1,
     },
   });
+
+  const nextPage = useCallback(() => {
+    setIsActive(false);
+    setPage(page + 1);
+  }, [page]);
+
+  const infiniteScrollRef = useInfiniteScroll(nextPage, isActive);
 
   useEffect(() => {
     if (data?.episodes?.results) {
@@ -41,47 +46,23 @@ export const Episodes: FC = () => {
     }
   }, [data?.episodes?.results]);
 
-  const loadData = useCallback((page: number) => {
+  useEffect(() => {
+    const maxPage = data?.episodes?.info?.pages ?? 1;
+
+    if (page === 1 || page > maxPage) return;
+
     fetchMore({
       variables: {
         page,
       },
     }).then(({ data }) => {
       const newEpisodes = (data.episodes?.results as Episode[]) ?? [];
-      setLastLoadedPageNum(page);
-      setPageNum(page);
       setEpisodes((prev) => [...prev, ...newEpisodes]);
+      setIsActive(true);
     });
+
     // eslint-disable-next-line
-  }, []);
-
-  const handleObserver = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      const [target] = entries;
-      if (target.isIntersecting) {
-        const nextPage = pageNum + 1;
-        const pagesCount = data?.episodes?.info?.pages || 1;
-        if (nextPage !== lastLoadedPageNum && nextPage <= pagesCount) {
-          loadData(nextPage);
-        }
-      }
-    },
-    [pageNum, lastLoadedPageNum, loadData, data?.episodes?.info?.pages]
-  );
-
-  useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: '50px',
-      threshold: 0,
-    };
-
-    if (observerLoader.current) observerLoader.current.disconnect();
-
-    observerLoader.current = new IntersectionObserver(handleObserver, options);
-    if (lastItem.current) observerLoader.current.observe(lastItem.current);
-    // eslint-disable-next-line
-  }, [lastItem]);
+  }, [page]);
 
   return loading ? (
     <Loader />
@@ -94,7 +75,7 @@ export const Episodes: FC = () => {
               <EpisodeCard
                 key={episode?.id}
                 episode={episode as Episode}
-                ref={lastItem}
+                ref={infiniteScrollRef}
               />
             );
           } else {

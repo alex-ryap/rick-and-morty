@@ -1,7 +1,6 @@
 query characters($page: Int) {
   characters(page: $page) {
     info {
-      count
       pages
     }
     results {

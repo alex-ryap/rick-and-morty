@@ -1,9 +1,10 @@
-import { createRef, FC, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Container } from '../components/Layout';
 import { Loader } from '../components/Loader';
 import { LocationCard } from '../components/LocationCard';
 import { useLocationsQuery, Location } from '../graphql/graphql';
+import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
 
 const GridContainer = styled.div`
   display: grid;
@@ -21,18 +22,22 @@ const GridContainer = styled.div`
 `;
 
 export const Locations: FC = () => {
+  const [page, setPage] = useState<number>(1);
   const [locations, setLocations] = useState<Location[]>([]);
-  const [lastLoadedPageNum, setLastLoadedPageNum] = useState<number>(0);
-
-  const [pageNum, setPageNum] = useState<number>(1);
-  const lastItem = createRef<HTMLDivElement>();
-  const observerLoader = useRef<IntersectionObserver>();
+  const [isActive, setIsActive] = useState<boolean>(true);
 
   const { data, loading, fetchMore } = useLocationsQuery({
     variables: {
       page: 1,
     },
   });
+
+  const nextPage = useCallback(() => {
+    setIsActive(false);
+    setPage(page + 1);
+  }, [page]);
+
+  const infiniteScrollRef = useInfiniteScroll(nextPage, isActive);
 
   useEffect(() => {
     if (data?.locations?.results) {
@@ -41,47 +46,23 @@ export const Locations: FC = () => {
     }
   }, [data?.locations?.results]);
 
-  const loadData = useCallback((page: number) => {
+  useEffect(() => {
+    const maxPage = data?.locations?.info?.pages ?? 1;
+
+    if (page === 1 || page > maxPage) return;
+
     fetchMore({
       variables: {
         page,
       },
     }).then(({ data }) => {
       const newLocations = (data.locations?.results as Location[]) ?? [];
-      setLastLoadedPageNum(page);
-      setPageNum(page);
       setLocations((prev) => [...prev, ...newLocations]);
+      setIsActive(true);
     });
+
     // eslint-disable-next-line
-  }, []);
-
-  const handleObserver = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      const [target] = entries;
-      if (target.isIntersecting) {
-        const nextPage = pageNum + 1;
-        const pagesCount = data?.locations?.info?.pages || 1;
-        if (nextPage !== lastLoadedPageNum && nextPage <= pagesCount) {
-          loadData(nextPage);
-        }
-      }
-    },
-    [pageNum, lastLoadedPageNum, loadData, data?.locations?.info?.pages]
-  );
-
-  useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: '50px',
-      threshold: 0,
-    };
-
-    if (observerLoader.current) observerLoader.current.disconnect();
-
-    observerLoader.current = new IntersectionObserver(handleObserver, options);
-    if (lastItem.current) observerLoader.current.observe(lastItem.current);
-    // eslint-disable-next-line
-  }, [lastItem]);
+  }, [page]);
 
   return loading ? (
     <Loader />
@@ -94,7 +75,7 @@ export const Locations: FC = () => {
               <LocationCard
                 key={location?.id}
                 location={location as Location}
-                ref={lastItem}
+                ref={infiniteScrollRef}
               />
             );
           } else {
